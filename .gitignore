@@ -50,3 +50,7 @@ vcpkg/
 
 # Ignore local cache used by e.g. clangd
 .cache/
+
+# Ignore all .txt files but CMakeLists.txt
+*.txt
+!CMakeLists.txt
