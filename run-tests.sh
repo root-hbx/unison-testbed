@@ -1,8 +1,10 @@
 #!/bin/bash
 
-tmux new-session -d -s unison-main-branch-mtp './test-mtp.sh'
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-tmux new-session -d -s unison-main-branch-ori './test-ori.sh'
+tmux new-session -d -s unison-main-branch-mtp "cd $SCRIPT_DIR && ./test-mtp.sh"
+
+tmux new-session -d -s unison-main-branch-ori "cd $SCRIPT_DIR && ./test-ori.sh"
 
 echo "Created tmux sessions: (tmux ls)"
 tmux ls
