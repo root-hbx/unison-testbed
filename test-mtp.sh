@@ -7,6 +7,9 @@ mkdir -p ./fat-tree-data/mtp-data
 # Differ: 1) configuration cmd 2) --thread
 echo "Cleaning ns3 for safety..."
 ./ns3 clean
+echo "Basic Configurating..."
+./ns3 configure
+./ns3 build
 echo "Configuring ns3 (mtp mode)..."
 ./ns3 configure -d optimized --enable-modules applications,flow-monitor,mpi,mtp,nix-vector-routing,point-to-point --enable-mtp --enable-examples
 echo "Building fat-tree (mtp mode)..."
