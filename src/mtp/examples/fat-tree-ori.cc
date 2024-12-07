@@ -21,7 +21,6 @@
 #include "ns3/core-module.h"
 #include "ns3/flow-monitor-module.h"
 #include "ns3/internet-module.h"
-#include "ns3/mtp-module.h"
 #include "ns3/network-module.h"
 #include "ns3/nix-vector-routing-module.h"
 #include "ns3/point-to-point-module.h"
@@ -312,8 +311,8 @@ Initialize(int argc, char* argv[])
     Time::SetResolution(Time::PS);
     RngSeedManager::SetSeed(Hash32(conf::seed));
 
-    // initialize mtp
-    MtpInterface::Enable(conf::thread);
+    // close mtp
+    // MtpInterface::Enable(conf::thread);
 }
 
 void

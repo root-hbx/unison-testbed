@@ -293,12 +293,13 @@ MultithreadedSimulatorImpl::DoDispose()
     SimulatorImpl::DoDispose();
 }
 
+// TODO(bxhu): refer to paper - pseudocode in Unison Design
 void
 MultithreadedSimulatorImpl::Partition()
 {
     NS_LOG_FUNCTION(this);
-    uint32_t systemId = 0;
-    const NodeContainer nodes = NodeContainer::GetGlobal();
+    uint32_t systemId = 0; // unique ID for each system
+    const NodeContainer nodes = NodeContainer::GetGlobal(); // global node container
     bool* visited = new bool[nodes.GetN()]{false};
     std::queue<Ptr<Node>> q;
 
@@ -333,16 +334,20 @@ MultithreadedSimulatorImpl::Partition()
         }
         else if (delays.size() % 2 == 1)
         {
+            // delays.size() is odd, just pick the middle one
             m_minLookahead = delays[delays.size() / 2];
         }
         else
-        {
+        {   
+            // delays.size() is even, pick the average of middle two
             m_minLookahead = (delays[delays.size() / 2 - 1] + delays[delays.size() / 2]) / 2;
         }
         NS_LOG_INFO("Min lookahead is set to " << m_minLookahead);
     }
 
-    // perform a BFS on the whole network topo to assign each node a systemId
+    // 1. perform a BFS on the whole network topo to assign each node a systemId
+    // 2. help divide the network into multiple systems for parallel execution 
+    // of simulations in a multithreaded environment
     for (auto it = nodes.Begin(); it != nodes.End(); it++)
     {
         Ptr<Node> node = *it;

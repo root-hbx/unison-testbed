@@ -43,12 +43,12 @@ void
 MtpInterface::Enable()
 {
 #ifdef NS3_MPI
-    GlobalValue::Bind("SimulatorImplementationType", StringValue("ns3::HybridSimulatorImpl"));
+    GlobalValue::Bind("SimulatorImplementationType", StringValue("ns3::HybridSimulatorImpl")); // mpi
 #else
     GlobalValue::Bind("SimulatorImplementationType",
-                      StringValue("ns3::MultithreadedSimulatorImpl"));
+                      StringValue("ns3::MultithreadedSimulatorImpl")); // mtp
 #endif
-    g_enabled = true;
+    g_enabled = true; // signal: enable mtp
 }
 
 void
@@ -179,11 +179,11 @@ MtpInterface::Disable()
 void
 MtpInterface::Run()
 {
-    RunBefore();
+    RunBefore(); // calculate lookahead and create threads
     while (!g_globalFinished)
     {
-        ProcessOneRound();
-        CalculateSmallestTime();
+        ProcessOneRound(); // everything in a round
+        CalculateSmallestTime(); // get the smallest time
     }
     RunAfter();
 }
@@ -191,7 +191,7 @@ MtpInterface::Run()
 void
 MtpInterface::RunBefore()
 {
-    CalculateLookAhead();
+    CalculateLookAhead(); // get min_duration of schedule
 
     // LP index for sorting & holding worker threads
     g_sortedSystemIndices = new uint32_t[g_systemCount];
@@ -209,6 +209,7 @@ MtpInterface::RunBefore()
     }
 }
 
+// TODO(bxhu): refer to paper - spatial partition
 void
 MtpInterface::ProcessOneRound()
 {
@@ -220,6 +221,8 @@ MtpInterface::ProcessOneRound()
         std::sort(g_sortedSystemIndices, g_sortedSystemIndices + g_systemCount, g_sortFunc);
     }
 
+    // == LPs are sorted well by priority. Now we can process them in order. ==
+
     // stage 1: process events
     g_recvMsgStage = false;
     g_finishedSystemCount.store(0, std::memory_order_relaxed);
@@ -227,13 +230,18 @@ MtpInterface::ProcessOneRound()
     // main thread also needs to process an LP to reduce an extra thread overhead
     while (true)
     {
+        // generate increasing index
         uint32_t index = g_systemIndex.fetch_add(1, std::memory_order_acquire);
+        
+        // if index is out of range, break the loop
         if (index >= g_systemCount)
         {
             break;
         }
-        LogicalProcess* system = &g_systems[g_sortedSystemIndices[index]];
-        system->ProcessOneRound();
+        LogicalProcess* system = &g_systems[g_sortedSystemIndices[index]]; // current LP
+        system->ProcessOneRound(); // process current LP
+        
+        // increase the finished system count
         g_finishedSystemCount.fetch_add(1, std::memory_order_release);
     }
 
@@ -246,6 +254,7 @@ MtpInterface::ProcessOneRound()
     g_systems[0].ProcessOneRound();
 
     // stage 3: receive messages
+    // principle here is the same as stage 1.
     g_recvMsgStage = true;
     g_finishedSystemCount.store(0, std::memory_order_relaxed);
     g_systemIndex.store(0, std::memory_order_release);
@@ -270,7 +279,7 @@ MtpInterface::ProcessOneRound()
 void
 MtpInterface::CalculateSmallestTime()
 {
-    // update smallest time
+    // update globally smallest time
     g_smallestTime = Time::Max() / 2;
     for (uint32_t i = 0; i <= g_systemCount; i++)
     {
@@ -281,6 +290,11 @@ MtpInterface::CalculateSmallestTime()
         }
     }
     g_nextPublicTime = g_systems[0].Next();
+
+    // TODO(bxhu): refer to paper - LBTS equation
+    // 1. g_smallestTime: $min{N_i} + t_{look_ahead_time}$
+    // 2. g_nextPublicTime: $N_{pub}$
+    // LINK ./logical-process.cc#LBTS
 
     // test if global finished
     bool globalFinished = true;

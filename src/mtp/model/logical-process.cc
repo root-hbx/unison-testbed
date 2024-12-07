@@ -179,10 +179,11 @@ LogicalProcess::ProcessOneRound()
     MtpInterface::SetSystem(m_systemId);
 
     // calculate time window
+    // ANCHOR[id=LBTS]
     Time grantedTime =
         Min(MtpInterface::GetSmallestTime() + m_lookAhead, MtpInterface::GetNextPublicTime());
 
-    auto start = std::chrono::system_clock::now();
+    auto start = std::chrono::system_clock::now(); // start timing
 
     // process events
     while (Next() <= grantedTime)
@@ -199,7 +200,7 @@ LogicalProcess::ProcessOneRound()
         next.impl->Unref();
     }
 
-    auto end = std::chrono::system_clock::now();
+    auto end = std::chrono::system_clock::now(); // end timing
     m_executionTime = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
 }
 
