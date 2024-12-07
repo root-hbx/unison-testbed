@@ -422,7 +422,7 @@ if __name__ == '__main__':
         subprocess.run('git checkout unison-evaluations', shell=True)
 
     # 1 (7d)
-    elif argv[1] == 'fat-tree-distributed':
+    elif argv[1] == 'fat-tree-distributed': # unison test (mtp)
         e = Experiment(argv[1])
         e.run('fat-tree', ['barrier', 'nullmsg', 'unison'],
               k=8,
@@ -439,7 +439,7 @@ if __name__ == '__main__':
               core=lambda args: args['cluster'])
 
     # 1 (4d)
-    elif argv[1] == 'fat-tree-default':
+    elif argv[1] == 'fat-tree-default': # unison test (ori)
         e = Experiment(argv[1])
         e.run('fat-tree', 'default',
               k=8,
