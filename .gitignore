@@ -49,3 +49,7 @@ cmake-build-release/
 .vscode/*
 !.vscode/launch.json
 !.vscode/tasks.json
+
+# Ignore all .txt files but CMakeLists.txt
+*.txt
+!CMakeLists.txt
