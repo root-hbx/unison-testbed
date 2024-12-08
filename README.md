@@ -61,3 +61,15 @@ __Data on Sugon Server__:
 ### ns-3-dev with mtp kernel
 
 [ns-3-dev (mtp branch)](https://github.com/majinchao2002/ns-3-dev/tree/mtp)
+
+__Data on Sugon Server__:
+
+|  k  |  t_flow  |  no mtp  |   mtp    | ratio |
+| :-: | :-: | :------: | :------: | ----- |
+|  4  |  1  | 41489s | 8794s | 4.72 |
+|  8  |  1  |  | 144773s | more than 6.5 |
+| 12  |  1  |          | 7509.47s |       |
+| 16  |  1 |          | 10103.5s |       |
+
+> latest update: 2024-12-07 23:28
+
