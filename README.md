@@ -55,7 +55,7 @@ Performance metrics can be found in the `~/fat-tree-data` directory.
 |:---:|:---:|:----------:|:-------:|:-----:|
 |  8  |  8  | 6923.66    | 455.54  | 15.20 |
 |  8  | 16  | 16574.4    | 412.33  | 40.20 |
-| 16  |  8  | 99720 (Ongoing) | 7509.47 | 13.28 |
+| 16  |  8  | 131269 | 7509.47 | 17.48 |
 | 16  | 16  |            | 10103.5 |       |
 
 ### (3) Modified ns-3-dev with MTP Kernel
@@ -89,4 +89,4 @@ The ultimate objective is to leverage the MTP kernel to accelerate the original 
 |     |        |            |         |       |
 
 
-> *Last updated: 2024-12-09 00:29*
+> *Last updated: 2024-12-09 14:39*
