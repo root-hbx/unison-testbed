@@ -1,16 +1,16 @@
-# Unison Platform for msccl
+# Unison Platform for MSCCL
 
 ## Original Unison README
 
-[UNISON-for-ns-3 (NJU)](https://github.com/NASA-NJU/UNISON-for-ns-3)
+For reference, please consult the [UNISON-for-ns-3 (NJU)](https://github.com/NASA-NJU/UNISON-for-ns-3) repository.
 
-## Unison for msccl
+## Unison for MSCCL
 
-We add some basic tests for unison performance check.
+We have introduced a set of foundational tests to evaluate the performance of the Unison platform.
 
-### Prerequisites
+### (0) Prerequisites
 
-Please implement these between different experiments for isolation.
+To ensure isolation between different experimental runs, execute the following steps prior to each experiment:
 
 ```sh
 ./ns3 clean
@@ -18,9 +18,9 @@ Please implement these between different experiments for isolation.
 ./ns3 build
 ```
 
-### Original DCTCP example
+### (1) Original DCTCP Example
 
-This part is totally same as that in original [unison example](https://github.com/NASA-NJU/UNISON-for-ns-3?tab=readme-ov-file#getting-started).
+This section remains identical to the original [Unison example](https://github.com/NASA-NJU/UNISON-for-ns-3?tab=readme-ov-file#getting-started).
 
 ```sh
 ./ns3 configure --enable-mtp --enable-examples
@@ -29,58 +29,64 @@ time ./ns3 run dctcp-example
 time ./ns3 run dctcp-example-mtp
 ```
 
-__Data on Sugon Server__:
+**Performance Data (Obtained on Sugon Server):**
 
-|no mtp|with mtp|ratio|
-|:---:|:---:|:---:|
-|14m44.299s|4min06s|3.68|
+| No MTP | With MTP | Ratio |
+|:------:|:--------:|:-----:|
+| 14m44.299s | 4m06s | 3.68 |
 
-### Reproduction for Fig 1
+### (2) Reproduction of Figure 1
 
-This is a reproduced version of Figure 1 from the original paper, conducted on a single Sugon server with only `--enable-mtp` enabled, without utilizing `--enable-mpi`.
+This section reproduces Figure 1 from the original publication. The experiments were conducted on a single Sugon server with only the `--enable-mtp` flag enabled. The `--enable-mpi` flag was not utilized.
 
 ```sh
-cd ~ # unison-msccl
+cd ~ # Navigate to the Unison-MSCCL directory
 ./run-tests.sh
-# check ~/fat-tree-data
+# Output is stored in ~/fat-tree-data
 ```
 
-These scripts will open 2 tmux sessions, running `test-mtp.sh` and `test-ori.sh` respectively.
+These scripts initialize two tmux sessions, executing `test-mtp.sh` and `test-ori.sh`, respectively.
 
-You can check `~/fat-tree-data`.
+Performance metrics can be found in the `~/fat-tree-data` directory.
 
-__Data on Sugon Server__:
+**Performance Data (Obtained on Sugon Server):**
 
-|  k  |  c  |  no mtp  |   mtp    | ratio |
-| :-: | :-: | :------: | :------: | ----- |
-|  8  |  8  | 6923.66s | 455.54s  | 15.20 |
-|  8  | 16  | 16574.4s | 412.331s | 40.20 |
-| 16  |  8  |     99720s (till now)     | 7509.47s |    13.28   |
-| 16  | 16  |          | 10103.5s |       |
+|  k  |  c  | No MTP (s) | MTP (s) | Ratio |
+|:---:|:---:|:----------:|:-------:|:-----:|
+|  8  |  8  | 6923.66    | 455.54  | 15.20 |
+|  8  | 16  | 16574.4    | 412.33  | 40.20 |
+| 16  |  8  | 99720 (Ongoing) | 7509.47 | 13.28 |
+| 16  | 16  |            | 10103.5 |       |
 
-### ns-3-dev (modified) with mtp kernel
+### (3) Modified ns-3-dev with MTP Kernel
 
-[ns-3-dev (mtp branch)](https://github.com/majinchao2002/ns-3-dev/tree/mtp)
+The modified `ns-3-dev` implementation (to better fix with arguments and mechanism in Unison Fig.1), incorporating the MTP kernel, can be accessed via the [mtp branch](https://github.com/majinchao2002/ns-3-dev/tree/mtp).
 
-__Data on Sugon Server__:
+**Performance Data (Obtained on Sugon Server):**
 
-|  k  |  t_flow  |  no mtp  |   mtp    | ratio |
-| :-: | :-: | :------: | :------: | ----- |
-|  4  |  1  | 41489s | 8794s | 4.72 |
-|  8  |  1  | 640800s (till now) | 144773s | 4.43 |
-| 12  |  1  |          | 7509.47s |       |
-| 16  |  1 |          | 10103.5s |       |
+|  k  | t_flow | No MTP (s) | MTP (s) | Ratio |
+|:---:|:------:|:----------:|:-------:|:-----:|
+|  4  |   1    | 41489      | 8794    | 4.72  |
+|  8  |   1    | 640800 (Ongoing) | 144773 | 4.43  |
+| 12  |   1    |            | 7509.47 |       |
+| 16  |   1    |            | 10103.5 |       |
 
-### ns-3-dev (original) with mtp kernel
+### (4) Original ns-3-dev with MTP Kernel
 
-Coming Soon ~
+The original `ns-3-dev` implementation, enhanced with the MTP kernel, is also accessible via the [mtp branch](https://github.com/majinchao2002/ns-3-dev/tree/mtp).
 
-|  k  |  t_flow  |  no mtp  |   mtp    | ratio |
-| :-: | :-: | :------: | :------: | ----- |
-|    |    |  |  |  |
-|    |    |  |  |  |
-|   |    |          |  |       |
-|   |   |          |  |       |
+The ultimate objective is to leverage the MTP kernel to accelerate the original experiments conducted in `ns-3-dev`. Preliminary evaluations have confirmed the functional effectiveness of the `--enable-mtp` flag. 
 
-> latest update: 2024-12-09 00:18
+🙌 Further assessments will focus on quantifying the practical performance improvements. 🤩
 
+**Data Collection in Progress:**
+
+|  k  | t_flow | No MTP (s) | MTP (s) | Ratio |
+|:---:|:------:|:----------:|:-------:|:-----:|
+|     |        |            |         |       |
+|     |        |            |         |       |
+|     |        |            |         |       |
+|     |        |            |         |       |
+
+
+> *Last updated: 2024-12-09 00:29*
