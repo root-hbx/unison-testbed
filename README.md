@@ -67,7 +67,7 @@ The modified `ns-3-dev` implementation (to better fix with arguments and mechani
 |  k  | t_flow | No MTP (s) | MTP (s) | Ratio |
 |:---:|:------:|:----------:|:-------:|:-----:|
 |  4  |   1    | 41489      | 8794    | 4.72  |
-|  8  |   1    | 882000 (Ongoing) | 144773 | 4.43  |
+|  8  |   1    | 882000 (Ongoing) | 144773 | 6.10|
 | 12  |   1    |            |  |       |
 | 16  |   1    |            |  |       |
 
