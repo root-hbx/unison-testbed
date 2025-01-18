@@ -18,7 +18,7 @@ To ensure isolation between different experimental runs, execute the following s
 ./ns3 build
 ```
 
-### (1) Original DCTCP Example
+### (1) Original DCTCP / FatTree Example
 
 This section remains identical to the original [Unison example](https://github.com/NASA-NJU/UNISON-for-ns-3?tab=readme-ov-file#getting-started).
 
@@ -34,6 +34,21 @@ time ./ns3 run dctcp-example-mtp
 | No MTP | With MTP | Ratio |
 |:------:|:--------:|:-----:|
 | 14m44.299s | 4m06s | 3.68 |
+
+Here we show the result of this [command](https://github.com/NASA-NJU/UNISON-for-ns-3?tab=readme-ov-file#examples):
+
+```sh
+# fat-tree-mtp (mtp mode)
+./ns3 run "fat-tree-mtp --thread=4"
+# fat-tree-ori (ordinary mode)
+./ns3 run "fat-tree-ori"
+```
+
+**Performance Data (Obtained on Sugon Server):**
+
+| No MTP | With MTP | Ratio |
+|:------:|:--------:|:-----:|
+| 396.58s | 164.43s | 2.41 |
 
 ### (2) Reproduction of Figure 1
 
