@@ -146,6 +146,8 @@ build-support/macros-and-definitions.cmake         |   10 +
 
 配置参数指令罢了
 
+这一部分不会导致数值差异
+
 - [x] Modifications to the `core` module to make reference counting thread-safe:
 
 ```
@@ -157,6 +159,8 @@ src/core/model/simple-ref-count.h                  |   11 +-
 ```
 
 定义原子操作，保证线程安全，不是核心
+
+这一部分不会导致数值差异
 
 Modifications to the `network` module to make packets thread-safe:
 
@@ -172,6 +176,8 @@ src/network/model/packet-tag-list.h                |   11 +-
 src/network/model/socket.cc                        |    6 +
 ```
 
+这一部分不会导致数值差异
+
 Modifications to the `internet` module to make it thread-safe and add per-flow ECMP routing:
 
 ```
@@ -182,6 +188,14 @@ src/internet/model/ipv4-packet-info-tag.cc         |    2 +
 src/internet/model/ipv6-packet-info-tag.cc         |    2 +
 src/internet/model/tcp-option.cc                   |    2 +-
 ```
+
+这一部分在merge时并没有改这两个文件，不知道为什么，明天看看 👀：
+
+```
+src/internet/model/ipv4-global-routing.cc          |   32 +-
+src/internet/model/ipv4-global-routing.h           |    8 +-
+```
+
 
 Modifications to the `flow-monitor` module to make it thread-safe:
 
@@ -196,12 +210,16 @@ src/flow-monitor/model/ipv6-flow-classifier.h      |    5 +
 src/flow-monitor/model/ipv6-flow-probe.cc          |    2 +
 ```
 
+这一部分不会导致数值差异
+
 Modifications to the `nix-vector-routing` module to make it thread-safe:
 
 ```
 src/nix-vector-routing/model/nix-vector-routing.cc |   92 ++
 src/nix-vector-routing/model/nix-vector-routing.h  |    8 +
 ```
+
+这一部分不会导致数值差异
 
 Modifications to the `mpi` module to make it thread-safe with the hybrid simulator:
 
@@ -210,6 +228,8 @@ src/mpi/model/granted-time-window-mpi-interface.cc |   25 +
 src/mpi/model/granted-time-window-mpi-interface.h  |    7 +
 src/mpi/model/mpi-interface.cc                     |    3 +-
 ```
+
+这一部分不会导致数值差异
 
 #### 3. Logging
 
