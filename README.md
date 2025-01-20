@@ -196,6 +196,7 @@ src/internet/model/ipv4-global-routing.cc          |   32 +-
 src/internet/model/ipv4-global-routing.h           |    8 +-
 ```
 
+经验证，这一部分不会导致数值差异
 
 Modifications to the `flow-monitor` module to make it thread-safe:
 
